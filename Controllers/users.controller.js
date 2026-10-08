@@ -14,6 +14,9 @@ async function getById(req,res) {
     try {
         const id = req.params.id;
         const users = await UsersModel.getById(id);
+        if (users.length === 0) {
+            return res.status(404).json({error : "L'utilisateur n'existe pas"});
+        }
         res.json(users[0]);
     } catch (error) {
         res.status(500).json({error: "Une erreur est survenue lors de la récupération du user"})
@@ -27,7 +30,7 @@ async function update(req,res) {
         
         let userToUpdate = await UsersModel.getById(id);
         if (userToUpdate.length === 0) {
-            res.status(404).json({error : "L'utilisateur n'existe pas"})
+            return res.status(404).json({error : "L'utilisateur n'existe pas"})
         }
         // [{}] = {}
         userToUpdate = userToUpdate[0];

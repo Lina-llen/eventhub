@@ -45,11 +45,17 @@ async function update(req, res) {
         if (body.location) {
             eventToUpdate.ev_location = body.location;
         }
-        if (body.owner) {
-            eventToUpdate.ev_owner = body.owner;
-        }
         await EventsModel.update(id, eventToUpdate);
-        res.json({ message: "Votre event à bien été modifié", event: eventToUpdate });
+        res.json({
+            message: "Votre event à bien été modifié",
+            event: {
+                ev_id: eventToUpdate.ev_id,
+                ev_title: eventToUpdate.ev_title,
+                ev_description: eventToUpdate.ev_description,
+                ev_date: eventToUpdate.ev_date,
+                ev_location: eventToUpdate.ev_location
+            }
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Une erreur est survenue lors de la modification de l'event" });

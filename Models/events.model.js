@@ -15,15 +15,8 @@ async function getById(id) {
 
 async function update(id, event) {
     const [status] = await db.query(
-        "UPDATE events SET ev_title = ?, ev_description = ?, ev_date = ?, ev_location = ?, ev_owner = ? WHERE ev_id = ?",
-        [
-            event.ev_title ?? event.title,
-            event.ev_description ?? event.description,
-            event.ev_date ?? event.date,
-            event.ev_location ?? event.location,
-            event.ev_owner ?? event.owner,
-            id
-        ]
+        "UPDATE events SET ev_title = ?, ev_description = ?, ev_date = ?, ev_location = ? WHERE ev_id = ?",
+        [event.ev_title, event.ev_description, event.ev_date, event.ev_location, id]
     );
     return status;
 }
