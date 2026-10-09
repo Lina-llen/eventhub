@@ -32,7 +32,6 @@ async function update(req,res) {
         if (userToUpdate.length === 0) {
             return res.status(404).json({error : "L'utilisateur n'existe pas"})
         }
-        // [{}] = {}
         userToUpdate = userToUpdate[0];
 
         if(body.username){
