@@ -11,7 +11,7 @@ async function getById(id) {
 }
 
 async function getByLogin(login) {
-    const [rows] = await db.query("SELECT us_id, us_username, us_email, us_password FROM users WHERE us_username = ?", [login]);
+    const [rows] = await db.query("SELECT us_username, us_email, us_password FROM users WHERE us_username = ?", [login]);
     return rows[0];
 }
 

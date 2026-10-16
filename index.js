@@ -6,12 +6,14 @@ import participantsRoute from './Routes/participants.route.js';
 import commentsRoute from './Routes/comments.route.js';
 import authRoute from './Routes/auth.route.js';
 import checkToken from './Middleware/auth.middleware.js';
+import cors from 'cors';
 
 const app = express();
 
 dotenv.config();
 
 app.use(express.json());
+app.use(cors());
 
 app.use('/auth', authRoute);
 
