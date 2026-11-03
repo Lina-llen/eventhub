@@ -1,4 +1,6 @@
 import EventsModel from '../Models/events.model.js'
+import ParticipantsModel from '../Models/participants.model.js'
+import CommentsModel from '../Models/comments.model.js'
 
 async function getAll(req,res) {
     try {
@@ -17,7 +19,10 @@ async function getById(req,res) {
         if (events.length === 0) {
             return res.status(404).json({error: "L'event n'existe pas !"});
         }
-        res.json(events[0]);
+        const event = events[0];
+        event.participants = await ParticipantsModel.getByEventId(id);
+        event.comments = await CommentsModel.getByEventId(id);
+        res.json(event);
     } catch (error) {
         console.error(error);
         res.status(500).json({error: "Une erreur est survenue lors de la récupération du event"})
@@ -77,7 +82,6 @@ async function insert(req,res){
     }
 }
 
-
 async function deleteEvent(req,res) {
     try {
         const id = req.params.id;
@@ -90,7 +94,6 @@ async function deleteEvent(req,res) {
     } catch (error) {
         console.error(error);
         res.status(500).json({error: "Une erreur est survenu lors de la suppression du event"})   
-        
     }
 }
 
@@ -100,4 +103,4 @@ export default {
     update,
     insert,
     deleteEvent
-}   
+}

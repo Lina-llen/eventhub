@@ -15,6 +15,14 @@ async function getById(id) {
     return rows;
 }
 
+async function getByEventId(eventId) {
+    const [rows] = await db.query(
+        "SELECT comments.co_id, comments.co_comment, comments.co_user, comments.co_event, users.us_username FROM comments INNER JOIN users ON users.us_id = comments.co_user WHERE comments.co_event = ?",
+        [eventId]
+    );
+    return rows;
+}
+
 async function insert(comment) {
     const [result] = await db.query(
         "INSERT INTO comments (co_comment, co_user, co_event) VALUES (?, ?, ?)",
@@ -46,6 +54,7 @@ async function deleteComment(id) {
 export default {
     getAll,
     getById,
+    getByEventId,
     insert,
     update,
     deleteComment
