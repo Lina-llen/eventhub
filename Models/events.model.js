@@ -1,13 +1,13 @@
 import db from '../Config/db.js'
 
 async function getAll() {
-    const [rows] = await db.query("SELECT ev_id, ev_title, ev_description, ev_date, ev_location FROM events");
+    const [rows] = await db.query("SELECT events.ev_id, events.ev_title, events.ev_description, events.ev_date, events.ev_location, users.us_username FROM events INNER JOIN users ON us_id = ev_owner");
     return rows;
 }
 
 async function getById(id) {
     const [rows] = await db.query(
-        "SELECT events.ev_id, events.ev_title, events.ev_description, events.ev_date, events.ev_location, events.ev_owner, users.us_username, users.us_email FROM events INNER JOIN users ON users.us_id = events.ev_owner WHERE events.ev_id = ?", 
+        "SELECT events.ev_id, events.ev_title, events.ev_description, events.ev_date, events.ev_location, events.ev_owner, users.us_username, users.us_email FROM events INNER JOIN users ON users.us_id = events.ev_owner WHERE events.ev_id = ?",
         [id]
     );
     return rows;
