@@ -24,7 +24,7 @@ app.get("/", (req,res) => {
 app.use(checkToken);
 
 app.use('/users', usersRoute);
-app.use('/events', eventsRoute);
+app.use('/event', eventsRoute);
 app.use('/participants', participantsRoute);
 app.use('/comments', commentsRoute);
 

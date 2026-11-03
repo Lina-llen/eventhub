@@ -24,11 +24,11 @@ async function register(req,res) {
 async function login(req,res) {
     try {
         const body = req.body;
-        if (!body.username || !body.password) {
-            return res.status(403).json({error: "Le login et le password sont obligatoires"});
+        if (!body.email || !body.password) {
+            return res.status(403).json({error: "L'email et le password sont obligatoires"});
         }
 
-        const user = await UsersModel.getByLogin(body.username);
+        const user = await UsersModel.getByEmail(body.email);
         if (!user) {
             return res.status(403).json({error: "Identifiants incorrects"});
         }

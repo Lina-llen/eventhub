@@ -10,8 +10,8 @@ async function getById(id) {
     return rows;
 }
 
-async function getByLogin(login) {
-    const [rows] = await db.query("SELECT us_username, us_email, us_password FROM users WHERE us_username = ?", [login]);
+async function getByEmail(email) {
+    const [rows] = await db.query("SELECT us_id, us_username, us_email, us_password FROM users WHERE us_email = ?", [email]);
     return rows[0];
 }
 
@@ -34,7 +34,7 @@ async function deleteUser(id) {
 export default {
     getAll,
     getById,
-    getByLogin,
+    getByEmail,
     update,
     insert,
     deleteUser

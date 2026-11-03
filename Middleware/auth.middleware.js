@@ -6,7 +6,7 @@ dotenv.config();
 function checkToken(req, res, next) {
     const header = req.headers["authorization"];
     const token = header && header.split(" ")[1];
-    if (!token) {
+    if (!token) {   
         return res.status(401).json({error: "Unauthorized"});
     }
 
