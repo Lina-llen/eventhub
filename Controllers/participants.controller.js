@@ -34,16 +34,16 @@ async function getByEventId(req,res) {
 
 async function insert(req,res) {
     try {
-        let userID = req.body.user;
+        const userID = req.user.id;
         let eventID = req.body.event;
-        if (!userID) {
-            userID = req.body.userID;
-        }
         if (!eventID) {
             eventID = req.body.eventID;
         }
-        if (!userID || !eventID) {
-            return res.status(403).json({error: "L'utilisateur (user) et l'événement (event) sont obligatoires !"});
+        if (!eventID) {
+            eventID = req.body.ev_id;
+        }
+        if (!eventID) {
+            return res.status(403).json({error: "L'événement (event) est obligatoire !"});
         }
         await ParticipantsModel.insert(userID, eventID);
         res.status(201).json({message: "L'utilisateur a bien été inscrit à l'événement", user: userID, event: eventID});
