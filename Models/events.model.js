@@ -5,6 +5,14 @@ async function getAll() {
     return rows;
 }
 
+async function getByUserId(userID) {
+    const [rows] = await db.query(
+        "SELECT events.ev_id, events.ev_title, events.ev_description, events.ev_date, events.ev_location, events.ev_owner, users.us_username FROM events INNER JOIN users ON users.us_id = events.ev_owner WHERE events.ev_owner = ?",
+        [userID]
+    );
+    return rows;
+}
+
 async function getById(id) {
     const [rows] = await db.query(
         "SELECT events.ev_id, events.ev_title, events.ev_description, events.ev_date, events.ev_location, events.ev_owner, users.us_username, users.us_email FROM events INNER JOIN users ON users.us_id = events.ev_owner WHERE events.ev_id = ?",
@@ -36,6 +44,7 @@ async function deleteEvent(id) {
 
 export default {
     getAll,
+    getByUserId,
     getById,
     update,
     insert,

@@ -10,6 +10,11 @@ async function getById(id) {
     return rows;
 }
 
+async function getPasswordById(id) {
+    const [rows] = await db.query("SELECT us_id, us_password FROM users WHERE us_id = ?", [id]);
+    return rows[0];
+}
+
 async function getByEmail(email) {
     const [rows] = await db.query("SELECT us_id, us_username, us_email, us_password FROM users WHERE us_email = ?", [email]);
     return rows[0];
@@ -19,6 +24,14 @@ async function update(id, user) {
     const updated = await db.query("UPDATE users SET us_username = ?, us_email=? WHERE us_id=?",
         [user.us_username, user.us_email, id]);
     return updated;
+}
+
+async function updatePassword(id, password) {
+    const [result] = await db.query(
+        "UPDATE users SET us_password = ? WHERE us_id = ?",
+        [password, id]
+    );
+    return result;
 }
 
 async function insert(user) {
@@ -34,8 +47,10 @@ async function deleteUser(id) {
 export default {
     getAll,
     getById,
+    getPasswordById,
     getByEmail,
     update,
+    updatePassword,
     insert,
     deleteUser
 }

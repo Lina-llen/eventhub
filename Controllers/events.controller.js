@@ -12,6 +12,17 @@ async function getAll(req,res) {
     }
 }
 
+async function getByUserId(req,res) {
+    try {
+        const userID = req.params.userID;
+        const events = await EventsModel.getByUserId(userID);
+        res.json(events);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: "Une erreur est survenue lors de la récupération des événements de l'utilisateur"});
+    }
+}
+
 async function getById(req,res) {
     try {
         const id = req.params.id;
@@ -99,6 +110,7 @@ async function deleteEvent(req,res) {
 
 export default {
     getAll,
+    getByUserId,
     getById,
     update,
     insert,

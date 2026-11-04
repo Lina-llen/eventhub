@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get('/', EventsController.getAll)
 
+router.get('/user/:userID', EventsController.getByUserId)
+
 router.get('/:id', EventsController.getById)
 
 router.patch('/:id', EventsController.update)
