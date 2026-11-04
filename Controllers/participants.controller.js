@@ -45,10 +45,17 @@ async function insert(req,res) {
         if (!eventID) {
             return res.status(403).json({error: "L'événement (event) est obligatoire !"});
         }
+        const participants = await ParticipantsModel.getByEventId(eventID);
+        if (participants.some((participant) => String(participant.pa_user) === String(userID))) {
+            return res.status(409).json({error: "Tu es déjà inscrit à cet événement."});
+        }
         await ParticipantsModel.insert(userID, eventID);
         res.status(201).json({message: "L'utilisateur a bien été inscrit à l'événement", user: userID, event: eventID});
     } catch (error) {
         console.error(error);
+        if (error.code === "ER_DUP_ENTRY") {
+            return res.status(409).json({error: "Tu es déjà inscrit à cet événement."});
+        }
         res.status(500).json({error: "Une erreur est survenue lors de l'inscription du participant"});
     }
 }
