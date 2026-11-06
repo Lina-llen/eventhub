@@ -30,7 +30,7 @@ async function update(id, event) {
 }
 
 async function insert(event) {
-    const inserted = await db.query(
+    const [inserted] = await db.query(
         "INSERT INTO events (ev_title, ev_description, ev_date, ev_location, ev_owner) VALUES (?, ?, ?, ?, ?)",
         [event.title, event.description, event.date, event.location, event.owner]
     );

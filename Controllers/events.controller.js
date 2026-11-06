@@ -80,13 +80,26 @@ async function update(req, res) {
 
 async function insert(req,res){
     try {
-        const body = req.body;
-        if (!body.title || !body.owner) {
-            return res.status(403).json({error : "Le titre et le owner sont obligatoire !"})
+        const { title, description, date, location } = req.body ?? {};
+        const owner = req.user?.id;
+        if (!owner) {
+            return res.status(401).json({error: "L'utilisateur doit être connecté pour créer un événement."});
+        }
+        if (!title?.trim() || !description?.trim() || !date || !location?.trim()) {
+            return res.status(400).json({error: "Le titre, la description, la date et le lieu sont obligatoires."});
         }
 
-        const inserted = await EventsModel.insert(body);
-        res.status(201).json(inserted);
+        const inserted = await EventsModel.insert({
+            title: title.trim(),
+            description: description.trim(),
+            date,
+            location: location.trim(),
+            owner
+        });
+        res.status(201).json({
+            message: "L'événement a bien été créé.",
+            eventId: inserted.insertId
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({error : "Erreur lors de l'insertion de l'event"});

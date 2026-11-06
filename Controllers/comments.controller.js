@@ -26,15 +26,20 @@ async function getById(req,res) {
 
 async function insert(req,res) {
     try {
-        const body = req.body;
-        const commentText = body.comment;
-        const userID = body.user;
-        const eventID = body.event;
-        if (!commentText || !userID || !eventID) {
-            return res.status(403).json({error: "Le commentaire (comment), l'utilisateur (user) et l'événement (event) sont obligatoires !"});
+        const { comment: commentText, event: eventID } = req.body ?? {};
+        const userID = req.user?.id;
+        if (!userID) {
+            return res.status(401).json({error: "L'utilisateur doit être connecté pour ajouter un commentaire."});
+        }
+        if (!commentText?.trim() || !eventID) {
+            return res.status(400).json({error: "Le commentaire (comment) et l'événement (event) sont obligatoires !"});
         }
 
-        const inserted = await CommentsModel.insert(body);
+        const inserted = await CommentsModel.insert({
+            comment: commentText.trim(),
+            user: userID,
+            event: eventID
+        });
         res.status(201).json(inserted);
     } catch (error) {
         console.error(error);
